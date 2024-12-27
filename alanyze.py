@@ -17,9 +17,10 @@ for file_name in files:
     data = json.load(file)
     for conversation in tqdm(data):
         conversation_rounds = conversation["conversations"]
-        conversation_round_cnt.append(len(conversation_rounds))
+        # conversation_round_cnt.append(len(conversation_rounds))
         # conversation_len.append()
         prompt_len = 0
+        user_prompt_cnt = 0
         for round_text in conversation_rounds:
             sender = round_text["from"]
             len_tokens = round_text["value"]
@@ -28,12 +29,14 @@ for file_name in files:
                 new_prompt_len = len_tokens
                 round_new_prompt_len.append(new_prompt_len)
                 round_prompt_len.append(prompt_len + new_prompt_len)
+                user_prompt_cnt += 1
             else:
                 round_response_len.append(len_tokens)
             
             prompt_len += len_tokens
             
         conversation_len.append(prompt_len)
+        conversation_round_cnt.append(user_prompt_cnt)
 
 print("conversation_round_cnt")
 print(conversation_round_cnt)
