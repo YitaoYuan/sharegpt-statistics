@@ -10,11 +10,12 @@ conversation_len = []
 round_prompt_len = []
 round_new_prompt_len = []
 round_response_len = []
+seq_len_in_decode = []
 
 for file_name in files:
     print(f"Processing file {file_name}", file=sys.stderr)
-    file = open(file_name, 'r', encoding='utf-8')
-    data = json.load(file)
+    with open(file_name, 'r', encoding='utf-8') as file:
+        data = json.load(file)
     for conversation in tqdm(data):
         conversation_rounds = conversation["conversations"]
         # conversation_round_cnt.append(len(conversation_rounds))
@@ -32,19 +33,20 @@ for file_name in files:
                 user_prompt_cnt += 1
             else:
                 round_response_len.append(len_tokens)
+                seq_len_in_decode.append((prompt_len, prompt_len + len_tokens))
             
             prompt_len += len_tokens
             
         conversation_len.append(prompt_len)
         conversation_round_cnt.append(user_prompt_cnt)
 
-print("conversation_round_cnt")
-print(conversation_round_cnt)
-print("conversation_len")
-print(conversation_len)
-print("round_prompt_len")
-print(round_prompt_len)
-print("round_new_prompt_len")
-print(round_new_prompt_len)
-print("round_response_len")
-print(round_response_len)
+output_dict = {
+    "conversation_round_cnt": conversation_round_cnt,
+    "conversation_len": conversation_len,
+    "round_prompt_len": round_prompt_len,
+    "round_new_prompt_len": round_new_prompt_len,
+    "round_response_len": round_response_len,
+    "seq_len_in_decode": seq_len_in_decode,
+}
+with open(f'figure.json', 'w', encoding='utf-8') as output_file:
+    json.dump(output_dict, output_file, indent=4)

@@ -9,9 +9,9 @@ files = ['sg_90k_part1.json', 'sg_90k_part2.json']
 # 打开JSON文件
 for file_name in files:
     print(f"Processing file {file_name}")
-    file = open(file_name, 'r', encoding='utf-8')
-    # 加载JSON数据
-    data = json.load(file)
+    with open(file_name, 'r', encoding='utf-8') as file:
+        # 加载JSON数据
+        data = json.load(file)
 
     for conversation in tqdm(data):
         conversation_rounds = conversation["conversations"]
@@ -20,6 +20,6 @@ for file_name in files:
             tokens = tokenizer.tokenize(text)
             round_text["value"] = len(tokens)
             
-    json_str = json.dumps(data, indent=4)
-    output_file = open(f'processed_{file_name}', 'w', encoding='utf-8')
-    output_file.write(json_str)
+    
+    with open(f'processed_{file_name}', 'w', encoding='utf-8') as output_file:
+        json.dump(data, output_file, indent=4)
