@@ -2,7 +2,7 @@ import json
 from tqdm import tqdm
 from transformers import AutoTokenizer
 
-tokenizer = AutoTokenizer.from_pretrained('/models/preset/meta-llama/Meta-Llama-3.1-70B-Instruct')
+tokenizer = AutoTokenizer.from_pretrained('/models/preset/meta-llama/Meta-Llama-3.1-70B-Instruct/v1.0')
 
 # data = []
 files = ['sg_90k_part1.json', 'sg_90k_part2.json']

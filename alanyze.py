@@ -22,6 +22,7 @@ for file_name in files:
         # conversation_len.append()
         prompt_len = 0
         user_prompt_cnt = 0
+        new_prompt_len = 0
         for round_text in conversation_rounds:
             sender = round_text["from"]
             len_tokens = round_text["value"]
@@ -33,7 +34,7 @@ for file_name in files:
                 user_prompt_cnt += 1
             else:
                 round_response_len.append(len_tokens)
-                seq_len_in_decode.append((prompt_len, prompt_len + len_tokens))
+                seq_len_in_decode.append((prompt_len, prompt_len + len_tokens, new_prompt_len))
             
             prompt_len += len_tokens
             
